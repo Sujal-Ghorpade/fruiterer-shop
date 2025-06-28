@@ -395,7 +395,8 @@
             <div class="admin-header">
                 <h1>Admin Dashboard</h1>
                 <div class="admin-actions">
-                    <button onclick="logout()" class="btn btn-delete">Logout</button>
+                    <button onclick="debugSession()" class="btn btn-secondary">Debug Session</button>
+                    <button onclick="logout()" class="btn btn-logout">Logout</button>
                 </div>
             </div>
 
@@ -487,17 +488,36 @@
         // Check authentication status on page load
         async function checkAuthStatus() {
             try {
+                console.log('Checking authentication status...');
                 const response = await fetch('/api/check-auth');
+                console.log('Auth response status:', response.status);
+                
                 if (response.status === 401) {
-                    // Not authenticated, redirect to login
+                    console.log('Not authenticated, redirecting to login');
                     window.location.href = '/admin';
                     return false;
                 }
+                
+                const data = await response.json();
+                console.log('Auth check result:', data);
                 return true;
             } catch (error) {
                 console.error('Auth check failed:', error);
                 window.location.href = '/admin';
                 return false;
+            }
+        }
+
+        // Debug session
+        async function debugSession() {
+            try {
+                const response = await fetch('/api/debug-session');
+                const data = await response.json();
+                console.log('Session debug info:', data);
+                alert('Check browser console for session debug info');
+            } catch (error) {
+                console.error('Debug session error:', error);
+                alert('Debug failed: ' + error.message);
             }
         }
 
