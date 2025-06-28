@@ -26,19 +26,20 @@ app.use(express.static('public', {
 // Session configuration with secure settings for production
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production', 
+        secure: false, // Set to false for Render compatibility
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        sameSite: 'lax' // Changed to lax for better compatibility
     },
     name: 'fruiterer-session',
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
         ttl: 24 * 60 * 60, // 24 hours
-        autoRemove: 'native'
+        autoRemove: 'native',
+        touchAfter: 24 * 3600 // Only update session once per day
     })
 }));
 
@@ -118,12 +119,22 @@ app.post('/api/login', async (req, res) => {
         }
         
         req.session.adminId = admin._id;
-        console.log('Login successful:', {
-            sessionId: req.sessionID,
-            adminId: admin._id,
-            email: admin.email
+        
+        // Force save the session
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ error: 'Session save failed' });
+            }
+            
+            console.log('Login successful:', {
+                sessionId: req.sessionID,
+                adminId: admin._id,
+                email: admin.email,
+                sessionSaved: true
+            });
+            res.json({ success: true, message: 'Login successful' });
         });
-        res.json({ success: true, message: 'Login successful' });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Server error' });
@@ -211,7 +222,8 @@ app.get('/api/check-auth', (req, res) => {
     console.log('Session check:', {
         sessionId: req.sessionID,
         adminId: req.session.adminId,
-        authenticated: !!req.session.adminId
+        authenticated: !!req.session.adminId,
+        sessionData: req.session
     });
     
     if (req.session.adminId) {
@@ -219,6 +231,15 @@ app.get('/api/check-auth', (req, res) => {
     } else {
         res.status(401).json({ authenticated: false, error: 'Authentication required' });
     }
+});
+
+app.get('/api/debug-session', (req, res) => {
+    res.json({
+        sessionId: req.sessionID,
+        sessionData: req.session,
+        authenticated: !!req.session.adminId,
+        headers: req.headers
+    });
 });
 
 // Health check endpoint for hosting platforms
