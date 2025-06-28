@@ -135,6 +135,14 @@ body {
     background: #5a6268;
 }
 
+.btn-logout {
+    background: #dc3545;
+}
+
+.btn-logout:hover {
+    background: #c82333;
+}
+
 /* Products Section */
 .products-section {
     background: #fff;
