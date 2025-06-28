@@ -484,6 +484,23 @@
     <script>
         let allFruits = []; // Store all fruits for search functionality
 
+        // Check authentication status on page load
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('/api/check-auth');
+                if (response.status === 401) {
+                    // Not authenticated, redirect to login
+                    window.location.href = '/admin';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = '/admin';
+                return false;
+            }
+        }
+
         // Logout
         function logout() {
             fetch('/api/logout', { method: 'POST' })
@@ -495,9 +512,17 @@
         async function loadFruits() {
             try {
                 const response = await fetch('/api/fruits');
+                if (response.status === 401) {
+                    window.location.href = '/admin';
+                    return;
+                }
                 allFruits = await response.json();
                 displayFruits(allFruits);
             } catch (error) {
+                if (error.message.includes('401')) {
+                    window.location.href = '/admin';
+                    return;
+                }
                 document.getElementById('fruits-container').innerHTML = '<p>Error loading fruits.</p>';
             }
         }
@@ -570,6 +595,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, price, imageUrl, category })
                 });
+                
+                if (response.status === 401) {
+                    window.location.href = '/admin';
+                    return;
+                }
+                
                 const data = await response.json();
                 if (data.success) {
                     messageDiv.textContent = 'Product added successfully!';
@@ -586,6 +617,10 @@
                     messageDiv.style.display = 'block';
                 }
             } catch (error) {
+                if (error.message.includes('401')) {
+                    window.location.href = '/admin';
+                    return;
+                }
                 messageDiv.textContent = 'Server error.';
                 messageDiv.className = 'message error';
                 messageDiv.style.display = 'block';
@@ -597,6 +632,12 @@
             if (!confirm('Are you sure you want to delete this product?')) return;
             try {
                 const response = await fetch(`/api/fruits/delete/${id}`, { method: 'DELETE' });
+                
+                if (response.status === 401) {
+                    window.location.href = '/admin';
+                    return;
+                }
+                
                 const data = await response.json();
                 if (data.success) {
                     loadFruits();
@@ -604,6 +645,10 @@
                     alert(data.error || 'Failed to delete product.');
                 }
             } catch (error) {
+                if (error.message.includes('401')) {
+                    window.location.href = '/admin';
+                    return;
+                }
                 alert('Server error.');
             }
         }
@@ -625,6 +670,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, price, imageUrl, category })
                 });
+                
+                if (response.status === 401) {
+                    window.location.href = '/admin';
+                    return;
+                }
+                
                 const data = await response.json();
                 if (data.success) {
                     messageDiv.textContent = 'Product updated successfully!';
@@ -640,6 +691,10 @@
                     messageDiv.style.display = 'block';
                 }
             } catch (error) {
+                if (error.message.includes('401')) {
+                    window.location.href = '/admin';
+                    return;
+                }
                 messageDiv.textContent = 'Server error.';
                 messageDiv.className = 'message error';
                 messageDiv.style.display = 'block';
@@ -647,7 +702,13 @@
         });
 
         // Initial load
-        document.addEventListener('DOMContentLoaded', loadFruits);
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication first
+            const isAuthenticated = await checkAuthStatus();
+            if (isAuthenticated) {
+                loadFruits();
+            }
+        });
     </script>
 </body>
 </html> 
