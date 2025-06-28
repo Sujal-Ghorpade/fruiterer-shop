@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Fruiterer Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo"> &#x1F9FA; Fruiterer </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section">
+            <h1 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: #222; letter-spacing: 1px; background: #f2f2f2; padding: 0.2em 0.7em 0.2em 1.2em; border-radius: 40px 0 0 40px; z-index: 2; position: relative;">Our Fresh Fruits & Dry Fruits</h1>
+            
+            <!-- Category Slider -->
+            <section class="category-slider">
+                <h3>Filter by Category</h3>
+                <div class="categories-container" id="categories-container">
+                    <div class="category-card active" data-category="all">
+                        <span class="category-icon">🍎</span>
+                        <div class="category-name">All Fruits</div>
+                        <div class="category-count">View All</div>
+                    </div>
+                    <div class="category-card" data-category="Featured">
+                        <span class="category-icon">⭐</span>
+                        <div class="category-name">Featured</div>
+                        <div class="category-count">0 items</div>
+                    </div>
+                    <div class="category-card" data-category="Seasonal">
+                        <span class="category-icon">🌱</span>
+                        <div class="category-name">Seasonal</div>
+                        <div class="category-count">0 items</div>
+                    </div>
+                    <div class="category-card" data-category="DryFruits">
+                        <span class="category-icon">🥜</span>
+                        <div class="category-name">Dry-Fruits</div>
+                        <div class="category-count">0 items</div>
+                    </div>
+                    <div class="category-card" data-category="FruitCandy">
+                        <span class="category-icon">🍬</span>
+                        <div class="category-name">Fruit Candy</div>
+                        <div class="category-count">0 items</div>
+                    </div>
+                    <div class="category-card" data-category="Other">
+                        <span class="category-icon">🍇</span>
+                        <div class="category-name">Other</div>
+                        <div class="category-count">0 items</div>
+                    </div>
+                </div>
+            </section>
+            
+            <div style="margin-bottom: 2rem; text-align: center;">
+                <input type="text" id="search-filter" placeholder="Search fruits..." style="padding: 15px; border-radius: 10px; border: 2px solid #e1e8ed; width: 300px; font-size: 1rem; transition: all 0.3s ease;">
+            </div>
+
+            <div id="products-slider-wrapper" style="position:relative;max-width:100%;margin:0 auto;">
+                <button id="slider-left" style="position:absolute;left:-2.5rem;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:2px solid #16a34a;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,0.07);">&#8592;</button>
+                <div class="products-slider-row" id="products-slider-row" style="overflow:hidden;">
+                    <div class="products-slider-inner" id="products-slider-inner" style="display:flex;transition:transform 0.5s cubic-bezier(.39,.575,.56,1);gap:2.5rem;"></div>
+                </div>
+                <button id="slider-right" style="position:absolute;right:-2.5rem;top:50%;transform:translateY(-50%);z-index:2;background:#fff;border:2px solid #16a34a;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,0.07);">&#8594;</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let allFruits = [];
+        let currentCategory = 'all';
+
+        // Load all fruits
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/fruits');
+                allFruits = await response.json();
+                
+                // Check URL parameters for initial category filter
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryParam = urlParams.get('category');
+                
+                if (categoryParam) {
+                    currentCategory = categoryParam;
+                    // Set active category in slider
+                    setActiveCategory(categoryParam);
+                }
+                
+                displayProducts(allFruits);
+                updateCategoryCounts(allFruits);
+                filterProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('products-container').innerHTML = '<p>Error loading products. Please try again later.</p>';
+            }
+        }
+
+        function displayProducts(fruits) {
+            const inner = document.getElementById('products-slider-inner');
+            if (!inner) return;
+            if (fruits.length === 0) {
+                inner.innerHTML = '<p style="text-align: center; font-size: 1.2rem; color: #666; width:100%;">No fruits available in this category at the moment.</p>';
+                return;
+            }
+            // Group products into rows of 8
+            const rows = [];
+            for (let i = 0; i < fruits.length; i += 8) {
+                rows.push(fruits.slice(i, i + 8));
+            }
+            inner.innerHTML = rows.map(row => `
+                <div class="products-row" style="display:flex;gap:2.5rem;min-width:100%;justify-content:center;">
+                    ${row.map(fruit => `
+                        <div class="category-card-anim" style="min-width:220px;max-width:240px;">
+                            <img src="${fruit.imageUrl}" alt="${fruit.name}" class="category-img">
+                            <div class="category-title">${fruit.name}</div>
+                            <div class="category-desc">₹${fruit.price.toFixed(2)}</div>
+                            <div class="category-desc" style="font-size:0.95rem;color:#16a34a;font-weight:600;">${fruit.category}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+            // Reset slider position
+            currentSliderIndex = 0;
+            updateSliderPosition();
+        }
+
+        function filterProducts() {
+            const searchFilter = document.getElementById('search-filter').value.toLowerCase();
+            
+            let filteredFruits = allFruits;
+            
+            // Apply category filter
+            if (currentCategory !== 'all') {
+                filteredFruits = filteredFruits.filter(fruit => fruit.category === currentCategory);
+            }
+            
+            // Apply search filter
+            if (searchFilter) {
+                filteredFruits = filteredFruits.filter(fruit => 
+                    fruit.name.toLowerCase().includes(searchFilter)
+                );
+            }
+            
+            displayProducts(filteredFruits);
+        }
+
+        function updateCategoryCounts(fruits) {
+            const categories = ['Featured', 'Seasonal', 'DryFruits', 'FruitCandy', 'Other'];
+            const counts = {};
+            
+            // Count fruits in each category
+            categories.forEach(category => {
+                counts[category] = fruits.filter(fruit => fruit.category === category).length;
+            });
+            
+            // Update category cards
+            categories.forEach(category => {
+                const categoryCard = document.querySelector(`[data-category="${category}"]`);
+                if (categoryCard) {
+                    const countElement = categoryCard.querySelector('.category-count');
+                    countElement.textContent = `${counts[category]} items`;
+                }
+            });
+        }
+
+        function setActiveCategory(category) {
+            // Remove active class from all cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected category
+            const selectedCard = document.querySelector(`[data-category="${category}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('active');
+            }
+        }
+
+        // Category slider functionality
+        function initializeCategorySlider() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const category = card.getAttribute('data-category');
+                    currentCategory = category;
+                    
+                    // Update active state
+                    setActiveCategory(category);
+                    
+                    // Update URL without page reload
+                    const url = new URL(window.location);
+                    if (category === 'all') {
+                        url.searchParams.delete('category');
+                    } else {
+                        url.searchParams.set('category', category);
+                    }
+                    window.history.pushState({}, '', url);
+                    
+                    // Filter products
+                    filterProducts();
+                });
+            });
+        }
+
+        // Add hover effects to category cards
+        function addCategoryHoverEffects() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    if (!card.classList.contains('active')) {
+                        card.style.transform = 'translateY(-10px) scale(1.05)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    if (!card.classList.contains('active')) {
+                        card.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+        }
+
+        // Event listeners
+        document.getElementById('search-filter').addEventListener('input', filterProducts);
+
+        // Slider logic
+        let currentSliderIndex = 0;
+        function updateSliderPosition() {
+            const inner = document.getElementById('products-slider-inner');
+            if (!inner) return;
+            const rows = inner.querySelectorAll('.products-row');
+            inner.style.transform = `translateX(-${currentSliderIndex * 100}%)`;
+            document.getElementById('slider-left').style.visibility = currentSliderIndex === 0 ? 'hidden' : 'visible';
+            document.getElementById('slider-right').style.visibility = currentSliderIndex === rows.length - 1 ? 'hidden' : 'visible';
+        }
+        document.getElementById('slider-left').onclick = function() {
+            if (currentSliderIndex > 0) {
+                currentSliderIndex--;
+                updateSliderPosition();
+            }
+        };
+        document.getElementById('slider-right').onclick = function() {
+            const inner = document.getElementById('products-slider-inner');
+            if (!inner) return;
+            const rows = inner.querySelectorAll('.products-row');
+            if (currentSliderIndex < rows.length - 1) {
+                currentSliderIndex++;
+                updateSliderPosition();
+            }
+        };
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            initializeCategorySlider();
+            addCategoryHoverEffects();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,35 @@
+{
+  "name": "fruiterer-shop",
+  "version": "1.0.0",
+  "description": "Dynamic Fruit Shop Website with Admin Panel",
+  "main": "server.js",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'No build step required'",
+    "postinstall": "echo 'Installation completed'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "express-session": "^1.17.3",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["fruit", "shop", "admin", "ecommerce", "nodejs", "express", "mongodb"],
+  "author": "Sujal Sanjay Ghorpade",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "your-repository-url"
+  }
+} 

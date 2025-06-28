@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Fruiterer Shop</title>
+    <link rel="stylesheet" href="admin-styles.css?v=1.0">
+    <style>
+        /* Critical inline styles to ensure basic functionality */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .admin-dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .forms-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .form-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+            border: 1px solid #e1e8ed;
+        }
+        
+        .form-card h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 0 2px rgba(22,163,74,0.1);
+        }
+        
+        .products-section {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .products-header h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 0 2px rgba(22,163,74,0.1);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+            padding: 2.5rem 2rem 2rem 2rem;
+            text-align: center;
+            border: 3px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 0.9s cubic-bezier(.39,.575,.56,1) both;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.04);
+            box-shadow: 0 16px 40px rgba(22,163,74,0.13);
+            border-color: #16a34a;
+        }
+        
+        .product-image {
+            width: 120px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 1.2rem;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.07));
+            animation: bounceIn 1.2s;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .product-price {
+            color: #16a34a;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-category {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 0.25rem 0.75rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #15803d;
+        }
+        
+        .btn-edit {
+            background: #f39c12;
+        }
+        
+        .btn-edit:hover {
+            background: #e67e22;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .product-actions .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .no-products {
+            text-align: center;
+            color: #6c757d;
+            padding: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #6c757d;
+            padding: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .forms-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .product-card {
+                min-width: 200px;
+                max-width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            
+            .product-image {
+                width: 90px;
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-dashboard {
+                padding: 1rem;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .product-card {
+                min-width: 140px;
+                max-width: 160px;
+                padding: 1rem 0.5rem;
+            }
+            
+            .product-image {
+                width: 60px;
+                height: 50px;
+            }
+            
+            .form-card, .products-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="admin-dashboard">
+            <div class="admin-header">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-actions">
+                    <button onclick="logout()" class="btn btn-delete">Logout</button>
+                </div>
+            </div>
+
+            <!-- Forms Row -->
+            <div class="forms-row">
+                <!-- Add Product Card -->
+                <div class="form-card">
+                    <h2>Add New Product</h2>
+                    <form id="add-fruit-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price (₹)</label>
+                            <input type="number" id="price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUrl">Image URL</label>
+                            <input type="url" id="imageUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="Featured">Featured</option>
+                                <option value="Seasonal">Seasonal</option>
+                                <option value="DryFruits">Dry-Fruits</option>
+                                <option value="FruitCandy">Fruit Candy</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Add Product</button>
+                    </form>
+                    <div id="add-fruit-message" class="message" style="display:none;"></div>
+                </div>
+
+                <!-- Edit Product Card -->
+                <div class="form-card">
+                    <h2>Edit Product</h2>
+                    <form id="edit-fruit-form">
+                        <input type="hidden" id="edit-id">
+                        <div class="form-group">
+                            <label for="edit-name">Name</label>
+                            <input type="text" id="edit-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-price">Price (₹)</label>
+                            <input type="number" id="edit-price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-imageUrl">Image URL</label>
+                            <input type="url" id="edit-imageUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-category">Category</label>
+                            <select id="edit-category" required>
+                                <option value="Featured">Featured</option>
+                                <option value="Seasonal">Seasonal</option>
+                                <option value="DryFruits">Dry-Fruits</option>
+                                <option value="FruitCandy">Fruit Candy</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-edit">Save Changes</button>
+                    </form>
+                    <div id="edit-fruit-message" class="message" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="products-section">
+                <div class="products-header">
+                    <h2>All Products</h2>
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search products by name..." class="search-input">
+                        <button onclick="clearSearch()" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+                <div id="fruits-container" class="products-grid">
+                    <div class="loading">Loading products...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let allFruits = []; // Store all fruits for search functionality
+
+        // Logout
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(() => window.location.href = '/admin')
+                .catch(() => window.location.href = '/admin');
+        }
+
+        // Load all fruits
+        async function loadFruits() {
+            try {
+                const response = await fetch('/api/fruits');
+                allFruits = await response.json();
+                displayFruits(allFruits);
+            } catch (error) {
+                document.getElementById('fruits-container').innerHTML = '<p>Error loading fruits.</p>';
+            }
+        }
+
+        // Search functionality
+        function searchProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filteredFruits = allFruits.filter(fruit => 
+                fruit.name.toLowerCase().includes(searchTerm) ||
+                fruit.category.toLowerCase().includes(searchTerm)
+            );
+            displayFruits(filteredFruits);
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            displayFruits(allFruits);
+        }
+
+        // Add search input event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('search-input').addEventListener('input', searchProducts);
+        });
+
+        function displayFruits(fruits) {
+            const container = document.getElementById('fruits-container');
+            if (fruits.length === 0) {
+                container.innerHTML = '<p class="no-products">No products found.</p>';
+                return;
+            }
+            container.innerHTML = fruits.map(fruit => `
+                <div class="product-card">
+                    <img src="${fruit.imageUrl}" alt="${fruit.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                    <div class="product-name">${fruit.name}</div>
+                    <div class="product-price">₹${fruit.price.toFixed(2)}</div>
+                    <div class="product-category">${fruit.category}</div>
+                    <div class="product-actions">
+                        <button class="btn btn-edit" onclick="loadProductForEdit('${fruit._id}', '${fruit.name}', ${fruit.price}, '${fruit.imageUrl}', '${fruit.category}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteFruit('${fruit._id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load product data into edit form
+        function loadProductForEdit(id, name, price, imageUrl, category) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-price').value = price;
+            document.getElementById('edit-imageUrl').value = imageUrl;
+            document.getElementById('edit-category').value = category;
+            
+            // Scroll to edit form
+            document.querySelector('.form-card:nth-child(2)').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add fruit
+        document.getElementById('add-fruit-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+            const category = document.getElementById('category').value;
+            const messageDiv = document.getElementById('add-fruit-message');
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/fruits/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, price, imageUrl, category })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    messageDiv.textContent = 'Product added successfully!';
+                    messageDiv.className = 'message success';
+                    messageDiv.style.display = 'block';
+                    this.reset();
+                    loadFruits();
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageDiv.textContent = data.error || 'Failed to add product.';
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Server error.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+
+        // Delete fruit
+        async function deleteFruit(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            try {
+                const response = await fetch(`/api/fruits/delete/${id}`, { method: 'DELETE' });
+                const data = await response.json();
+                if (data.success) {
+                    loadFruits();
+                } else {
+                    alert(data.error || 'Failed to delete product.');
+                }
+            } catch (error) {
+                alert('Server error.');
+            }
+        }
+
+        // Edit fruit
+        document.getElementById('edit-fruit-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const name = document.getElementById('edit-name').value;
+            const price = document.getElementById('edit-price').value;
+            const imageUrl = document.getElementById('edit-imageUrl').value;
+            const category = document.getElementById('edit-category').value;
+            const messageDiv = document.getElementById('edit-fruit-message');
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch(`/api/fruits/update/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, price, imageUrl, category })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    messageDiv.textContent = 'Product updated successfully!';
+                    messageDiv.className = 'message success';
+                    messageDiv.style.display = 'block';
+                    loadFruits();
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageDiv.textContent = data.error || 'Failed to update product.';
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Server error.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', loadFruits);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruiterer Shop - Fresh Fruits Delivered</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo"> &#x1F9FA; Fruiterer</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 style="font-size:3rem;font-weight:800;letter-spacing:1px;color:#a4cd15;text-shadow:0 2px 8px rgba(0,0,0,0.07);">New Tamboli Fruit Shop !</h1>
+            <h2 style="font-size:2rem;font-weight:700;margin:1rem 0 0.5rem 0;color:#a4cd15;">
+                Fresh And <span style="color:#16a34a;font-weight:900;">Organic</span> Fruits For You
+            </h2>
+            <p style="font-size:1.25rem;color:#a4cd15;font-weight:600;max-width:700px;margin:0 auto 2rem auto;text-shadow:0 1px 2px rgba(22,163,74,0.1);">
+                Fresh and organic fruits are packed with essential vitamins, minerals, and antioxidants that boost overall health and strengthen the immune system.
+            </p>
+            <a href="/products" class="btn" style="margin-top:1rem;">Shop Now</a>
+        </section>
+
+        <!-- Product Categories Section -->
+        <section class="section" style="background:#f2f2f2;padding:2rem 0 3rem 0;">
+            <div class="ribbon-title"><span class="ribbon-title-main">Product</span><span class="ribbon-title-green">Categories</span></div>
+            <div class="category-cards-row">
+                <div class="category-card-anim">
+                    <img src="https://images.livemint.com/rf/Image-621x414/LiveMint/Period2/2017/10/31/Photos/Processed/fruits-kFLF--621x414@LiveMint.jpg" alt="Fruits" class="category-img">
+                    <div class="category-title">Fruits</div>
+                    <div class="category-desc">Fresh & Sweetened</div>
+                    <a href="/products?category=Fruits" class="category-btn">Shop Now</a>
+                </div>
+                <div class="category-card-anim">
+                    <img src="https://media.istockphoto.com/id/1218693828/photo/wooden-bowl-with-mixed-nuts-on-rustic-table-top-view-healthy-food-and-snack.jpg?s=612x612&w=0&k=20&c=89-ko7nwlcqM6HPvwaQ3tZus4apArtwHkFAB0IxPQpo=" alt="Dry-Fruits" class="category-img">
+                    <div class="category-title">Dry-Fruits</div>
+                    <div class="category-desc">At Affordable Price</div>
+                    <a href="/products?category=DryFruits" class="category-btn">Shop Now</a>
+                </div>
+                <div class="category-card-anim">
+                    <img src="https://st2.depositphotos.com/1001069/10447/i/950/depositphotos_104471288-stock-photo-colorful-jelly-candies.jpg" alt="Candies" class="category-img">
+                    <div class="category-title">Candies</div>
+                    <div class="category-desc">Sweet & Delicious</div>
+                    <a href="/products?category=FruitCandy" class="category-btn">Shop Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Features Section -->
+        <section class="section" style="background:#f2f2f2;padding:2rem 0 3rem 0;">
+            <div class="ribbon-title"><span class="ribbon-title-main">Our</span><span class="ribbon-title-green">Features</span></div>
+            <div class="features-cards-row">
+                <div class="features-card-anim">
+                    <img src="https://tiimg.tistatic.com/fp/1/008/263/99-9-pure-fresh-a-grade-indian-origin-common-cultivated-sweet-organic-fruits-682.jpg" alt="Fresh and Organic" class="features-img">
+                    <div class="features-title">fresh and organic</div>
+                    <div class="features-desc">Enjoy the essence of farm-fresh produce, where every fruit is grown with care and picked at the peak of perfection.</div>
+                    <a href="/products?category=Fruits" class="features-btn">Shop Now</a>
+                </div>
+                <div class="features-card-anim">
+                    <img src="https://www.shutterstock.com/image-photo/healthy-fruits-on-white-packages-260nw-48725431.jpg" alt="Freshness Guaranteed" class="features-img">
+                    <div class="features-title">Freshness Guaranteed</div>
+                    <div class="features-desc">Our fruits are picked at peak ripeness to ensure the freshest taste and highest quality.</div>
+                    <a href="/products" class="features-btn">Shop Now</a>
+                </div>
+                <div class="features-card-anim">
+                    <img src="https://img.freepik.com/free-photo/top-view-trash-cooking-concept_23-2149056458.jpg?semt=ais_hybrid&w=740" alt="Unseasonal Fruits" class="features-img">
+                    <div class="features-title">Unseasonal Fruits</div>
+                    <div class="features-desc">Enjoy seasonal and unique fruits year-round for every taste and occasion.</div>
+                    <a href="/products" class="features-btn">Shop Now</a>
+                </div>
+            </div>
+        </section>
+
+        <style>
+        .ribbon-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .ribbon-title-main {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #222;
+            letter-spacing: 1px;
+            background: #f2f2f2;
+            padding: 0.2em 0.7em 0.2em 1.2em;
+            border-radius: 40px 0 0 40px;
+            z-index: 2;
+            position: relative;
+        }
+        .ribbon-title-green {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            background: #16a34a;
+            padding: 0.2em 1.2em 0.2em 0.7em;
+            border-radius: 0 40px 40px 0;
+            margin-left: -0.3em;
+            box-shadow: 2px 4px 12px rgba(22,163,74,0.08);
+            z-index: 1;
+            position: relative;
+        }
+        .category-cards-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .category-card-anim {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-width: 320px;
+            max-width: 350px;
+            text-align: center;
+            border: 3px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 0.9s cubic-bezier(.39,.575,.56,1) both;
+        }
+        .category-card-anim:hover {
+            transform: translateY(-12px) scale(1.04);
+            box-shadow: 0 16px 40px rgba(22,163,74,0.13);
+            border-color: #16a34a;
+        }
+        .category-img {
+            width: 160px;
+            height: 140px;
+            object-fit: contain;
+            margin-bottom: 1.2rem;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.07));
+            animation: bounceIn 1.2s;
+        }
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        .category-desc {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 1.2rem;
+        }
+        .category-btn {
+            display: inline-block;
+            padding: 0.7em 2.2em;
+            border-radius: 8px;
+            border: 2px solid #222;
+            background: #fff;
+            color: #222;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(22,163,74,0.07);
+        }
+        .category-btn:hover {
+            background: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+            transform: scale(1.05);
+        }
+        .features-cards-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .features-card-anim {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-width: 320px;
+            max-width: 350px;
+            text-align: center;
+            border: 3px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 0.9s cubic-bezier(.39,.575,.56,1) both;
+        }
+        .features-card-anim:hover {
+            transform: translateY(-12px) scale(1.04);
+            box-shadow: 0 16px 40px rgba(22,163,74,0.13);
+            border-color: #16a34a;
+        }
+        .features-img {
+            width: 160px;
+            height: 140px;
+            object-fit: contain;
+            margin-bottom: 1.2rem;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.07));
+            animation: bounceIn 1.2s;
+        }
+        .features-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        .features-desc {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 1.2rem;
+        }
+        .features-btn {
+            display: inline-block;
+            padding: 0.7em 2.2em;
+            border-radius: 8px;
+            border: 2px solid #222;
+            background: #fff;
+            color: #222;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(22,163,74,0.07);
+        }
+        .features-btn:hover {
+            background: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+            transform: scale(1.05);
+        }
+        @media (max-width: 1100px) {
+            .category-cards-row, .features-cards-row { flex-direction: column; align-items: center; }
+        }
+        </style>
+
+        <!-- Category Slider -->
+        <section class="category-slider">
+            <h3>Explore Our Categories</h3>
+            <div class="categories-container" id="categories-container">
+                <div class="category-card" data-category="all">
+                    <span class="category-icon">🍎</span>
+                    <div class="category-name">All Fruits</div>
+                    <div class="category-count">View All</div>
+                </div>
+                <div class="category-card" data-category="Featured">
+                    <span class="category-icon">⭐</span>
+                    <div class="category-name">Featured</div>
+                    <div class="category-count">0 items</div>
+                </div>
+                <div class="category-card" data-category="Seasonal">
+                    <span class="category-icon">🌱</span>
+                    <div class="category-name">Seasonal</div>
+                    <div class="category-count">0 items</div>
+                </div>
+                <div class="category-card" data-category="DryFruits">
+                    <span class="category-icon">🥜</span>
+                    <div class="category-name">Dry-Fruits</div>
+                    <div class="category-count">0 items</div>
+                </div>
+                <div class="category-card" data-category="FruitCandy">
+                    <span class="category-icon">🍬</span>
+                    <div class="category-name">Fruit Candy</div>
+                    <div class="category-count">0 items</div>
+                </div>
+                <div class="category-card" data-category="Other">
+                    <span class="category-icon">🍇</span>
+                    <div class="category-name">Other</div>
+                    <div class="category-count">0 items</div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <script>
+        // Load featured fruits
+        async function loadFeaturedFruits() {
+            try {
+                const response = await fetch('/api/fruits');
+                const fruits = await response.json();
+                
+                const featuredFruits = fruits.filter(fruit => fruit.category === 'Featured').slice(0, 6);
+                const seasonalFruits = fruits.filter(fruit => fruit.category === 'Seasonal').slice(0, 6);
+                
+                displayFruits('featured-fruits', featuredFruits);
+                displayFruits('seasonal-fruits', seasonalFruits);
+                
+                // Update category counts
+                updateCategoryCounts(fruits);
+            } catch (error) {
+                console.error('Error loading fruits:', error);
+                document.getElementById('featured-fruits').innerHTML = '<p>Error loading fruits. Please try again later.</p>';
+                document.getElementById('seasonal-fruits').innerHTML = '<p>Error loading fruits. Please try again later.</p>';
+            }
+        }
+
+        function displayFruits(containerId, fruits) {
+            const container = document.getElementById(containerId);
+            
+            if (fruits.length === 0) {
+                container.innerHTML = '<p>No fruits available at the moment.</p>';
+                return;
+            }
+            
+            container.innerHTML = fruits.map(fruit => `
+                <div class="fruit-card">
+                    <img src="${fruit.imageUrl}" alt="${fruit.name}" class="fruit-image">
+                    <div class="fruit-info">
+                        <h3 class="fruit-name">${fruit.name}</h3>
+                        <div class="fruit-price">$${fruit.price.toFixed(2)}</div>
+                        <span class="fruit-category">${fruit.category}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCategoryCounts(fruits) {
+            const categories = ['Featured', 'Seasonal', 'DryFruits', 'FruitCandy', 'Other'];
+            const counts = {};
+            
+            // Count fruits in each category
+            categories.forEach(category => {
+                counts[category] = fruits.filter(fruit => fruit.category === category).length;
+            });
+            
+            // Update category cards
+            categories.forEach(category => {
+                const categoryCard = document.querySelector(`[data-category="${category}"]`);
+                if (categoryCard) {
+                    const countElement = categoryCard.querySelector('.category-count');
+                    countElement.textContent = `${counts[category]} items`;
+                }
+            });
+        }
+
+        // Category slider functionality
+        function initializeCategorySlider() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Remove active class from all cards
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked card
+                    card.classList.add('active');
+                    
+                    const category = card.getAttribute('data-category');
+                    
+                    // Navigate to products page with category filter
+                    if (category === 'all') {
+                        window.location.href = '/products';
+                    } else {
+                        window.location.href = `/products?category=${category}`;
+                    }
+                });
+            });
+        }
+
+        // Add hover effects to category cards
+        function addCategoryHoverEffects() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // Load fruits when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeaturedFruits();
+            initializeCategorySlider();
+            addCategoryHoverEffects();
+        });
+    </script>
+</body>
+</html> 
