@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const path = require('path');
@@ -31,9 +32,14 @@ app.use(session({
         secure: process.env.NODE_ENV === 'production', 
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     },
-    name: 'fruiterer-session'
+    name: 'fruiterer-session',
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 24 * 60 * 60, // 24 hours
+        autoRemove: 'native'
+    })
 }));
 
 // MongoDB Connection with proper error handling
@@ -112,6 +118,11 @@ app.post('/api/login', async (req, res) => {
         }
         
         req.session.adminId = admin._id;
+        console.log('Login successful:', {
+            sessionId: req.sessionID,
+            adminId: admin._id,
+            email: admin.email
+        });
         res.json({ success: true, message: 'Login successful' });
     } catch (error) {
         console.error('Login error:', error);
@@ -193,6 +204,20 @@ app.put('/api/fruits/update/:id', requireAuth, async (req, res) => {
     } catch (error) {
         console.error('Update fruit error:', error);
         res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/check-auth', (req, res) => {
+    console.log('Session check:', {
+        sessionId: req.sessionID,
+        adminId: req.session.adminId,
+        authenticated: !!req.session.adminId
+    });
+    
+    if (req.session.adminId) {
+        res.json({ authenticated: true });
+    } else {
+        res.status(401).json({ authenticated: false, error: 'Authentication required' });
     }
 });
 
